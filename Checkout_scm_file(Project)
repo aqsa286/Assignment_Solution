@@ -44,6 +44,12 @@ Select   --> To : , Subject : , Body : ,
 
 
 
+ OR..
+~ > Now create same jenkinsfile on github 
+> select checkout from scm
+> script path  should be jenkins file.
+
+
 
 
 
