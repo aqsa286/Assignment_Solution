@@ -1,0 +1,51 @@
+==> Use Jenkins for the above mentioned task
+Update the Jenkins file to do the following:
+Use variable where possible
+Use post method to send alert via email in case of failure or success
+
+> New Item    --> Name : checkout_scm.j 
+ > Pipeline   
+ > ok
+ 
+ :: Scroll down and on Pipeline section.
+ Select  --> Pipeline script
+ Script:
+ 
+ pipeline 
+{
+    agent any
+
+    stages 
+    {
+        stage('Checkout SCM') 
+        {
+            steps 
+            {
+                git branch: 'main', credentialsId: 'Checkout', url: 'https://github.com/aqsa286/Checkout_scm_jenkinsfile.git'
+            }
+        }   
+    }
+    post
+    {
+        always
+        {
+            emailext body: 'Summary', subject: 'Checkout Scm', to: 'aqsafarooq402@gmail.com'
+        }
+    }
+}
+
+
+Question ; How to get this syntax for Sending Email?
+> In Pipeline see at the end.
+> Pipeline Syntax     
+Sample Step : emailext:Extended Email       --> Select other option for doing another functions. LIKE: build:Build a job
+Select   --> To : , Subject : , Body : ,
+> Generate Pipeline Script       --> Now this will show SYNTAX of sending Email Notification.
+
+
+
+
+
+
+
+
