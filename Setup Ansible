@@ -48,4 +48,12 @@ Step -6: Now verify in ansible server.
 > ssh ip_address   --> Node1 ip.
 :: Now it will ask for password so do passwordless Authentication.
 
+Step -7: Password less Authentication.
+> ssh-keygen       --> This will create pub. priv.key
+> ls -a            --> O/P   :   .ssh
+> cd .ssh          --> O/P   :   id_rsa   id_rsa_pub
+> ssh-copy-id ansible@ip_address              --> Write private ip of the machine which you want to access.
+> cd .. 
+> ssh ip_addres                     --> Node ip.
+:: Now, you will enter into node without password.
 
