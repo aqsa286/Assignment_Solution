@@ -1,0 +1,62 @@
+==> > branching model 
+> Create three stages: development , stage and main(Production).
+> Code will be push directly dev branch pull request will be created from dev to stage. once the code is merge to stage we need to create another pull request from stage to main.
+
+> Go in Terminal
+> mkdir branching_pull
+> cd branching_pull
+> git init
+> nano file1
+
+#!/bin/bash
+
+echo "Enter Your Name"
+read name
+echo "Welcome, $name to linux."
+
+> git add .
+> git commit -m "My First Comment"
+> git branch     ---> main
+> git branch -M main         ---> change name from master to main.
+> git remote add origin https://github.com/aqsa286/hi.git
+> git push -u origin main
+
+> git branch dev
+> git branch stage           --->  create new branches from main.
+
+---> Branch dev with main:
+
+> git checkout dev       ---> change branch
+> git branch             ---> dev
+> git pull origin main     ---> first we should take pull.
+> nano file1             ---> Do some changes in this file.
+
+#!/bin/bash
+
+echo "Enter Your Name"
+read name
+echo "Welcome here, $name to linux"
+
+> git add .
+> git commit -m "My second comment"
+> git push -u origin dev
+
+:: Go at github refresh page :
+:: come in directory branching_model.
+> Compare & Pull request    ---> this option will show here.
+:: This will show "Able to merge" means, not any conflict here.
+
+> Create Pull request
+> merge pull request         ---> This will merge all new change in dev branch.
+> Confirm merge.
+
+---> In Terminal:
+> git checkout main
+> git pull origin main       ---> Now changes will be updated in local machine.
+
+
+>> Do same with branch dev to stage.
+
+
+
+Link : https://youtu.be/cQtCCPMbAFU

@@ -1,0 +1,78 @@
+==> Github branches merge branching pipeline
+
+--> First create directory in your local machine and make it git initialization and then create branches and push it on github directory. Then  do some changing in it, then merge it.
+
+
+--> Login jenkins:
+
+> New Item
+Name : merge-branch-pipeline
+Select    ---> Pipeline
+Select    ---> Ok
+
+-> General:
+Select    ---> Github Project
+Project url :          https://github.com/aqsa286/merge-branch-pipeline.git/        ---> Paste here github directory url.
+
+Select    ---> This project is parametrized
+> Add Parameter 
+Select    ---> Choice Parameter
+Name : FROMBRANCH
+Choice : 
+main
+dev
+stage
+
+> Add Parameter 
+Select    ---> Choice Parameter
+Name : TOBRANCH
+Choice : 
+main
+dev
+stage
+
+-> Pipeline
+Definition:
+Select       ---> Pipeline script
+
+Script:
+
+pipeline {
+    agent any
+     stages {
+        stage(branch){
+             steps{
+                 script{
+                   sh '''
+                   git show-ref
+                   git remote update
+                   git fetch --all
+                   git checkout $TOBRANCH
+                   git pull origin $TOBRANCH --allow-unrelated-histories
+
+                   ls -la	
+                   git merge --no-ff --no-edit origin/$FROMBRANCH
+
+                   LASTSTATUS=$?
+                   echo "last status of git merge was $LASTSTATUS"
+                   if [ $LASTSTATUS -ne 0 ]; 
+                   then
+                      echo "The merge failed."
+                   exit 1  
+                   fi
+ 
+                   git remote -v
+                   git config remote.origin.url https://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@github.com/aqsa286/merge-branch-pipeline.git
+
+                   git log HEAD..origin/$TOBRANCH
+                   git push -u origin $TOBRANCH 
+                   '''
+                 }
+             }
+        }
+     }
+}
+
+> Save.
+> Build with parameter 
+:: Now select here branch parameter which you want to merge.
