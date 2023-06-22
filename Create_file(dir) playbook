@@ -1,0 +1,27 @@
+==> Create Direcctory if it doesn't exist:
+
+---  # Playbook 
+- name: Playbook name
+  hosts: all
+  tasks:
+      - name: Task name                                              Step-1--> store value in register.
+        stat:
+           path: [path to the file or directory you want to check]
+        register: register_name
+        
+      - debug:                                                       Step-2--> Show msg
+           msg: "The file or directory exists"
+        when: register_name.stat.exists
+
+       - name: Task name 2                                           Step-3--> create directory.
+         file:
+           path: [path to the file you want to create]
+           state: touch/directory
+
+           mode: "u=rwx,g=rwx,o=rx"
+         
+       - name: Transfer the script                                    Step-4--> copy file at remote.
+         action: copy src=/home/ansible/test_copy/APIs dest=/home/ansible/test mode=0777
+         
+       - name: Execute the script                                      Step-5--> 
+         command: sh /home/ansible/test/APIs/curl.sh
