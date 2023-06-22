@@ -1,0 +1,85 @@
+==> 1) Inlude ansible playbook pipeline in each stage 
+2) Github repo for anisble playbook (echo respetive stage) 
+3) add parameters for each pipeline 
+
+
+> New Item
+Enter an Item name : Pipeline StagesPipeline_Parameter
+Select   --> pipeline
+> Ok
+Select   --> Pipeline
+Defination : Pipeline script
+script:
+
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'SELECT_STAGE', choices: ['dev', 'stage', 'production'], description: 'Choose stage for build.')
+    }
+    stages {
+        stage('dev') {
+            when {
+                expression { params.SELECT_STAGE == 'dev' }
+            }
+            steps {
+                echo "dev stage executing"
+                git 'https://github.com/aqsa286/Ansible-Docker.git'
+                script{
+                sh '''
+                ls -ltr
+                cd playbook
+                ansible-playbook docker.yml
+                ansible-playbook --extra-vars '{"name":"Komal"}' echo.yml
+                '''
+                }
+            }
+        }
+
+        stage('stage') {
+            when {
+                expression { params.SELECT_STAGE == 'stage' }
+            }
+            steps {
+                echo "stage stage executing"
+                git 'https://github.com/aqsa286/Ansible-Docker.git'
+                script{
+                sh '''
+                ls -ltr
+                cd playbook
+                ansible-playbook dir.yml
+                ansible-playbook --extra-vars '{"name":"Razia"}' echo.yml
+                '''
+                }
+            }
+        }
+        
+        stage('production') {
+            when {
+                expression { params.SELECT_STAGE == 'production' }
+            }
+            steps {
+                echo "production stage executing"
+                git 'https://github.com/aqsa286/Ansible-Docker.git'
+                script{
+                sh '''
+                ls -ltr
+                cd playbook
+                ansible-playbook variable.yml
+                ansible-playbook --extra-vars '{"name":"Ayesha"}' echo.yml
+                '''
+                }
+            }
+        }
+    }
+}
+
+> Save.
+> Build.
+> Build with parameter    --> Now select here parameter whih you want to build and selet "Build".
+
+:: Select  --> "Pipeline Syntax" you can set pipeline syntax.
+Steps: Sample Step :
+Select  ---> properties: set job properties.
+Select  ---> This job is parameterized    --> Add parameter   --> choice parameter
+Now give here: Name :.........,  choices : ........., 
+> Generate Pipeline script.
