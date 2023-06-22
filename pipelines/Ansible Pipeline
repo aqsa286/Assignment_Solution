@@ -125,6 +125,7 @@ pipeline{
         stage('Execute ansible'){
             steps{
                   ansiblePlaybook credentialsId: 'Private_Key', disableHostKeyChecking: true, installation: 'ansible2', inventory: 'hosts', playbook: 'playbook/pkg.yml'
+
             }
         }
     }
@@ -139,7 +140,7 @@ Done.
 Link:   https://youtu.be/PRpEbFZi7nI
 
 
-
+==========================
 
 
 ==> Build Trigger automatically. ( 2 ways to build trigger )
@@ -156,9 +157,6 @@ Schedule : * * * * *
 
 
 
-
-Token:
-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
 
 
 
