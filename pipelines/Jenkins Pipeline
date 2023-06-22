@@ -1,0 +1,145 @@
+== > Simple jenkins Pipeline.
+~ > Simple Pipeline;
+> New Item 
+Name : MyFirstPipeline
+Select --> Pipeline    --> OK.
+> Advanced Project Options;
+Display Name : SimplePipeline
+> Pipeline 
+Definition : Pipeline script
+
+Script ;
+pipeline 
+{
+    agent any
+
+    stages 
+    {
+        stage('Build') 
+        {
+            steps 
+            {
+                echo 'Build App'
+            }
+        }
+        stage('Test') 
+        {
+            steps 
+            {
+                echo 'Test App'
+            }
+        }
+        stage('Deploy') 
+        {
+            steps 
+            {
+                echo 'Deploy App'
+            }
+        }
+    }
+}
+
+> Save.   > Build Now  
+:: Now this will build 3 stages.
+Sucess.
+
+~ > Send Email notification of Failure or Success.
+> SimplePipeline   > Configure      > Pipeline    --> Do some changes. Add this lines after stages.
+
+Script ;
+.....
+post
+    {
+           always 
+           {
+               emailext body: 'Summary', subject: 'Pipeline Status', to: 'aqsafarooq402@gmail.com'
+           }
+    }
+}
+
+:: Different Post Conditions Like: Always, unstable , Success, Failure, Changes.
+
+Question ; How to get this syntax for Sending Email?
+> In Pipeline see at the end.
+> Pipeline Syntax     
+Sample Step : emailext:Extended Email       --> Select other option for doing another functions. LIKE: build:Build a job
+Select   --> To : , Subject : , Body : ,
+> Generate Pipeline Script       --> Now this will show SYNTAX of sending Email Notification.
+
+  OR..
+~ > Now Access Same Jenkinsfile from git repository;
+> https://github.com/aqsa286/mavenjenkins    --> Its test project on Github.
+> Create New file Name : Jenkinsfile
+
+pipeline 
+{
+    agent any
+
+    stages 
+    {
+        stage('Build') 
+        {
+            steps 
+            {
+                echo 'Build App'
+            }
+        }
+        stage('Test') 
+        {
+            steps 
+            {
+                echo 'Test App'
+            }
+        }
+        stage('Deploy') 
+        {
+            steps 
+            {
+                echo 'Deploy App'
+            }
+        }
+    }
+    post
+    {
+           always 
+           {
+               emailext body: 'Summary', subject: 'Pipeline Status', to: 'aqsafarooq402@gmail.com'
+           }
+    }
+
+}
+
+> Commit New File.
+
+~ > On Jenkins;
+
+> SimplePipeline
+> Configure 
+Select   --> Pipeline 
+Definition : Pipeline script from SCM.
+SCM        : Git
+Repository URL : https://github.com/aqsa286/mavenjenkins.git    --> Copy this URL from Git hub jenkinsfile location.
+> Save
+> Build Now.
+
+:: > Configure 
+> Build Trigger 
+Enable --> Poll SCM
+Schedule : ***
+> Save.
+--> Now if you did any change in Github Jenkinsfile, it will detect changes automatically on jenkins pipeline.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

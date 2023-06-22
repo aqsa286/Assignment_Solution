@@ -1,0 +1,38 @@
+
+
+
+==> Pipeline
+
+-- # Transfer the Script on Remote server
+- hosts: localhost
+  become: yes
+  tasks:
+     - name: Copy Dockerfile
+       action: copy src=Dockerfile dest=/home/aqsa286/Desktop/Docker mode=0777
+
+     - name: build docker image
+       docker_image:
+          name: mydocimg
+          build:
+             path: /home/aqsa286/Desktop/Docker
+          source: build
+          state: present
+
+     - name : Running the Container
+       docker_container:
+          name: DOContainer
+          image: mydocimg
+          state: started
+          ports:
+          - "8081:81"
+          tty: true
+          detach: true
+          interactive: yes
+
+
+==> Come in container with root privilages
+
+ >  docker exec -it -u 0 <container-id> sh
+
+Now make Pipeline     Continue.....
+

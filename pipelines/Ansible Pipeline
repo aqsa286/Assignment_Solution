@@ -1,0 +1,165 @@
+Task 1: Pushing code at github
+> mkdir mydir
+
+> nano file1
+#! /bin/bash
+....
+
+> git init
+> git add .
+> git commit -m "Hi, I am Here."
+
+:: git config --global user.email aqsa286  --> some time it can say this.
+
+> git remote add origin URL   (URL of github repo.)
+> git push origin master
+
+
+===Done==
+
+
+TAsk 2:  prepare our playbook locally
+In Playbok-> Install nginx at remote server:
+
+> Login as ansible user
+> su - ansible
+> nano pkg.yml
+
+- hosts: demo
+  user: ansible
+  connection: ssh
+  become: yes
+  tasks:
+       - name: Install putty
+         apt: name=putty state=present
+
+:: Keep this file in the 
+
+
+
+
+
+==>Install Ansible Plugin
+> Manage Jenkins
+> Manage Plugin
+:: Intsall "Ansible" Plugins
+
+==> Now Configure Plugin
+> MAnage Jenkins
+> Global Tool Configuration      --> Here Scroll down.
+> Add Ansible
+Name: ansible2
+Path to ansible executables directory: /usr/bin/   --> Do "which ansible"
+
+==> Pipeline
+> New Item
+Name: AnsiblePipeline
+select--> Pipeline
+save
+
+:: Come in "Pipeline" Section
+Script:
+
+pipeline{
+    agent any
+    stages{
+        stage('SCM Checkout'){
+            steps{
+                
+            }
+        }
+    }
+}
+
+:: Pipeline Syntax
+Select--> Git:git
+Paste here git repository URL here.
+> generate pipeline here
+Copy it from here and paste in script.
+
+pipeline{
+    agent any
+    stages{
+        stage('SCM Checkout'){
+            steps{
+                git 'https://github.com/aqsa286/Ansible.git'
+            }
+        }
+        stage('Execute ansible'){
+            steps{
+                
+            }
+        }
+    }
+}
+
+:: Come again in Pipeline syntax
+SampleStep: ansiblePlaybook Inoke an ansibke playbook
+Playbook file path in workspace :     playbook/pkg.yml        ---> Path of playbook
+Inventory file path in workspace :    hosts                    --> Path of inventory file which you did add Nodes
+SSH connection credentials :
+Select --> Add Credential
+Kind: SSh username with private
+ID : Privat_key    --> Your choice
+Description:  ansible
+username: aqsa286
+Select --> Enter directly
+Click  --> Add
+:: NOW Paste here your ssh private key from;
+> cd .ssh > cat id_rsa
+> Add
+
+select --> Disable the host SSH key check
+:: Now click on "Generate Pipeline Script"
+Copy this line and paste in there;
+
+Script:
+pipeline{
+    agent any
+    stages{
+        stage('SCM Checkout'){
+            steps{
+                git 'https://github.com/aqsa286/Ansible.git'
+            }
+        }
+        stage('Execute ansible'){
+            steps{
+                  ansiblePlaybook credentialsId: 'Private_Key', disableHostKeyChecking: true, installation: 'ansible2', inventory: 'hosts', playbook: 'playbook/pkg.yml'
+            }
+        }
+    }
+}
+
+Click ---> Save.
+
+> Build Now.
+
+Done.
+
+Link:   https://youtu.be/PRpEbFZi7nI
+
+
+
+
+
+==> Build Trigger automatically. ( 2 ways to build trigger )
+Push Notification: Version Control Notifies jenkins on new commit  ( Push notification)
+
+In;
+"Build Triggers" Section
+Enable --> Poll SCM
+Schedule : * * * * *
+> Save.
+
+
+
+
+
+
+
+Token:
+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
+
+
+
+
